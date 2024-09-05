@@ -17,6 +17,18 @@ function TodoItem({ todo }) {
   };
 
   const handleDelete = () => {
+    const storedTodos = JSON.parse(localStorage.getItem("todos"));
+
+    // If the todo being deleted is at index 0 and it's the only one, clear local storage
+    if (storedTodos && storedTodos.length === 1 && storedTodos[0].id === todo.id) {
+      localStorage.removeItem("todos");
+    } else if (storedTodos) {
+      // Otherwise, filter out the deleted todo and update local storage
+      const updatedTodos = storedTodos.filter((t) => t.id !== todo.id);
+      localStorage.setItem("todos", JSON.stringify(updatedTodos));
+    }
+
+    // Proceed to delete the todo from state
     deleteTodo(todo.id);
   };
 
